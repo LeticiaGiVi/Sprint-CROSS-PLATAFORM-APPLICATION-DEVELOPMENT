@@ -1,10 +1,9 @@
 import React from 'react';
-import  NavigationContainer  from '@react-navigation/native';
+import  {NavigationContainer}  from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import DashboardScreen from '@/screens/Dashboards';
-import EquipesScreen from '@/screens/Equipes';
-import CronogramaScreen from '@/screens/Cronograma';
-// Você precisará criar um CustomDrawerContent para deixar o menu azul e estilizado como na foto
+import DashboardScreen from './src/screens/Dashboards';
+import EquipesScreen from './src/screens/Equipes';
+import CronogramaScreen from './src/screens/Cronograma';
 
 const Drawer = createDrawerNavigator();
 
