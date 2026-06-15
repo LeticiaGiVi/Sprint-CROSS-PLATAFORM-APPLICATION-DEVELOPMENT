@@ -1,39 +1,30 @@
-import React from "react";
-// Importa componentes do React Navigation
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import header from "./src/components/Header";
-import { header } from "./src/components/Header";
-import Admin from "./src/screens/Admin";
+import React from 'react';
+import  NavigationContainer  from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import DashboardScreen from '@/screens/Dashboards';
+import EquipesScreen from '@/screens/Equipes';
+import CronogramaScreen from '@/screens/Cronograma';
+// Você precisará criar um CustomDrawerContent para deixar o menu azul e estilizado como na foto
 
-// Cria o navegador
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
-    // NavigationContainer envolve toda a navegação
     <NavigationContainer>
-      {/* Stack.Navigator define a pilha de telas */}
-      <Stack.Navigator
+      <Drawer.Navigator 
+        initialRouteName="Dashboard"
         screenOptions={{
-          headerStyle: { backgroundColor: "#2196F3" }, // Cor do cabeçalho
-          headerTintColor: "#fff", // Cor do texto do cabeçalho
-          headerTitleStyle: { fontWeight: "bold" }, // Estilo do título
+          headerShown: false, // Vamos usar um header customizado
+          drawerActiveBackgroundColor: '#0088ff',
+          drawerActiveTintColor: '#fff',
+          drawerInactiveTintColor: '#666',
         }}
       >
-        {/* Tela Home - tela inicial */}
-        <Stack.Screen 
-          name="Home" 
-          component={Home}
-          options={{ title: "Minhas Consultas" }}
-        />
-        {/* Tela Admin - tela administrativa */}
-        <Stack.Screen 
-          name="Admin" 
-          component={Admin}
-          options={{ title: "Painel Administrativo" }}
-        />
-      </Stack.Navigator>
+        <Drawer.Screen name="Dashboard" component={DashboardScreen} />
+        <Drawer.Screen name="Mapas" component={DashboardScreen} /> {/* Placeholder */}
+        <Drawer.Screen name="Equipes" component={EquipesScreen} />
+        <Drawer.Screen name="Cronograma" component={CronogramaScreen} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
