@@ -45,12 +45,40 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npx expo start
    ```
 
-## Get a fresh project
+## Estrutura do projeto
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+src/
+  screens/      # Telas do app (Lista, Cadastro, Detalhe)
+  components/   # Componentes reutilizáveis (OcorrenciaCard)
+  types/        # Tipos TypeScript (Ocorrencia)
+  data/         # Dados de exemplo (mock, não usados em runtime)
+  services/     # Toda a persistência (AsyncStorage) fica aqui
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Modelagem
+
+```typescript
+export type Ocorrencia = {
+  id: number;
+  descricao: string;
+  local: string;
+  risco: "baixo" | "medio" | "alto";
+  data: string;
+};
+```
+
+## Fluxo do app
+
+1. **Criar**: na tela de Lista, toque em "+ Nova Ocorrência" → preencha
+   descrição, local e risco → "Salvar". O app chama
+   `ocorrenciasService.adicionarOcorrencia`, que grava no AsyncStorage.
+2. **Listar**: ao voltar do cadastro, a Lista é atualizada com o novo item
+   imediatamente (sem reiniciar o app), pois o `App.tsx` guarda o estado em
+   memória e o atualiza com o retorno do service.
+3. **Ver detalhe**: toque em qualquer card da lista para abrir a tela de
+   Detalhe, que mostra descrição, local, risco (com selo colorido) e data.
+4. **Reabrir o app**: ao fechar e abrir o app novamente, o `App.tsx` chama
+   `ocorrenciasService.getOcorrencias()` assim que monta (`useEffect`), e a
+   Lista aparece exatamente como estava antes de fechar — os dados nunca
+   dependem de estado em memória sozinho.

@@ -5,35 +5,38 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
+import { Ocorrencia } from "../types/Ocorrencia";
 
 type Props = {
-  onSalvar: (
-    descricao: string,
-    local: string,
-    risco: "baixo" | "medio" | "alto"
-  ) => void;
-  voltar: () => void; // CORRIGIDO: prop voltar adicionada
+  // App decide o que fazer com os dados (chama o service e atualiza o estado).
+  // A tela nunca fala com o AsyncStorage diretamente.
+  onSalvar: (dados: {
+    descricao: string;
+    local: string;
+    risco: Ocorrencia["risco"];
+  }) => void;
+  voltar: () => void;
 };
 
 export default function CadastroOcorrenciaScreen({ onSalvar, voltar }: Props) {
   const [descricao, setDescricao] = useState("");
   const [local, setLocal] = useState("");
-  const [risco, setRisco] = useState<"baixo" | "medio" | "alto">("baixo");
+  const [risco, setRisco] = useState<Ocorrencia["risco"]>("baixo");
 
   function handleSalvar() {
-    if (!descricao.trim() || !local.trim()) return; // CORRIGIDO: validação básica
-    onSalvar(descricao, local, risco);
-    setDescricao(""); // CORRIGIDO: limpa campos após salvar
-    setLocal("");
-    setRisco("baixo");
+    if (!descricao.trim() || !local.trim()) {
+      Alert.alert("Campos obrigatórios", "Preencha descrição e local.");
+      return;
+    }
+    onSalvar({ descricao: descricao.trim(), local: local.trim(), risco });
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Nova Ocorrência</Text>
 
-      {/* CARD FORM */}
       <View style={styles.card}>
         <Text style={styles.label}>Descrição</Text>
         <TextInput
@@ -54,7 +57,6 @@ export default function CadastroOcorrenciaScreen({ onSalvar, voltar }: Props) {
         />
 
         <Text style={styles.label}>Nível de Risco</Text>
-
         <View style={styles.riskRow}>
           {(["baixo", "medio", "alto"] as const).map((item) => (
             <TouchableOpacity
@@ -77,18 +79,11 @@ export default function CadastroOcorrenciaScreen({ onSalvar, voltar }: Props) {
           ))}
         </View>
 
-        <TouchableOpacity
-          style={styles.saveButton}
-          onPress={handleSalvar}
-        >
+        <TouchableOpacity style={styles.saveButton} onPress={handleSalvar}>
           <Text style={styles.saveText}>Salvar</Text>
         </TouchableOpacity>
 
-        {/* CORRIGIDO: botão voltar */}
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={voltar}
-        >
+        <TouchableOpacity style={styles.backButton} onPress={voltar}>
           <Text style={styles.backText}>Cancelar</Text>
         </TouchableOpacity>
       </View>
@@ -97,17 +92,8 @@ export default function CadastroOcorrenciaScreen({ onSalvar, voltar }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F4F6FA",
-    padding: 20,
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: "700",
-    marginBottom: 20,
-    color: "#222",
-  },
+  container: { flex: 1, backgroundColor: "#F4F6FA", padding: 20 },
+  title: { fontSize: 26, fontWeight: "700", marginBottom: 20, color: "#222" },
   card: {
     backgroundColor: "#fff",
     borderRadius: 16,
@@ -132,11 +118,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 10,
   },
-  riskRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 8,
-  },
+  riskRow: { flexDirection: "row", justifyContent: "space-between", marginTop: 8 },
   riskButton: {
     flex: 1,
     marginHorizontal: 4,
@@ -145,17 +127,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#F2F4F8",
     alignItems: "center",
   },
-  riskButtonActive: {
-    backgroundColor: "#2F6FED",
-  },
-  riskText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#555",
-  },
-  riskTextActive: {
-    color: "#fff",
-  },
+  riskButtonActive: { backgroundColor: "#2F6FED" },
+  riskText: { fontSize: 12, fontWeight: "600", color: "#555" },
+  riskTextActive: { color: "#fff" },
   saveButton: {
     marginTop: 20,
     backgroundColor: "#2F6FED",
@@ -163,11 +137,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
   },
-  saveText: {
-    color: "#fff",
-    fontWeight: "700",
-    fontSize: 15,
-  },
+  saveText: { color: "#fff", fontWeight: "700", fontSize: 15 },
   backButton: {
     marginTop: 10,
     paddingVertical: 12,
@@ -176,9 +146,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#CCC",
   },
-  backText: {
-    color: "#555",
-    fontWeight: "600",
-    fontSize: 15,
-  },
+  backText: { color: "#555", fontWeight: "600", fontSize: 15 },
 });

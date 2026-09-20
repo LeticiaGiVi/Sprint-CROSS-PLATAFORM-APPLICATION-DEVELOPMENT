@@ -1,5 +1,8 @@
-import { Ocorrencia } from "../interfaces/Ocorrencias";
+import { Ocorrencia } from "../types/Ocorrencia";
 
+// Dados de exemplo, usados apenas para referência/testes manuais.
+// Não são carregados automaticamente no app: a lista real vem sempre
+// do AsyncStorage (ver src/services/ocorrenciasService.ts).
 export const mockOcorrencias: Ocorrencia[] = [
   {
     id: 1,
