@@ -1,4 +1,4 @@
-import { Ocorrencia } from "../types/Ocorrencia";
+import { Ocorrencia } from "@/types/Ocorrencia";
 
 // Dados de exemplo, usados apenas para referência/testes manuais.
 // Não são carregados automaticamente no app: a lista real vem sempre

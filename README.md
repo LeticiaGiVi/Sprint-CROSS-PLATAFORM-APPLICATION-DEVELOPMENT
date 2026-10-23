@@ -3,7 +3,6 @@
 Aplicativo mobile para **gestores e supervisores de rodovia** registrarem e acompanharem ocorrências de vegetação alta nas margens da pista, classificando cada uma por nível de risco.
   
 ---
- 
 ##  Integrantes
  
 **Ciência da Computação – 2CCR**
@@ -18,7 +17,7 @@ Aplicativo mobile para **gestores e supervisores de rodovia** registrarem e acom
 | Sarah | RM563841 | Telas |
 
 ---
- 
+
 ##  O problema
  
 A vegetação alta nas margens das rodovias reduz a visibilidade, esconde sinalização e aumenta o risco de acidentes. Hoje, o acompanhamento costuma ser disperso e difícil de priorizar.
@@ -36,28 +35,30 @@ A vegetação alta nas margens das rodovias reduz a visibilidade, esconde sinali
 
 ---
  
-## 📁 Estrutura de pastas
+## Estrutura de pastas
  
 ```
 .
-├── App.tsx                         # Estado global, carga inicial e troca de telas
-├── index.ts
+├── app.json
+├── package.json
 └── src/
-    ├── screens/
-    │   ├── Lista.tsx               # Lista de ocorrências
-    │   ├── Cadastro.tsx            # Formulário de nova ocorrência
-    │   └── Detalhe.tsx             # Detalhe da ocorrência
+    ├── app/                        # rotas (Expo Router)
+    │   ├── _layout.tsx             # Stack de navegação
+    │   ├── index.tsx               # Lista
+    │   ├── cadastro.tsx            # Cadastro
+    │   └── ocorrencia/[id].tsx     # Detalhe
     ├── components/
-    │   └── OcorrenciaCard.tsx      # Card da lista, com selo de risco
+    │   └── OcorrenciaCard.tsx
     ├── types/
-    │   └── Ocorrencia.ts           # Tipo Ocorrencia
+    │   ├── Ocorrencia.ts
+    │   └── risco.ts                # rótulos e cores de risco
     ├── data/
-    │   └── mock.ts                 # Dados de exemplo (não usados em runtime)
+    │   └── mock.ts
     └── services/
-        └── ocorrenciasService.ts   # Toda a persistência (AsyncStorage)
+        └── ocorrenciasService.ts   # persistência (AsyncStorage)
 ```
  
-## 🧩 Tipo `Ocorrencia`
+##  Tipo `Ocorrencia`
  
 Definido em `src/types/Ocorrencia.ts`:
  
@@ -75,19 +76,22 @@ export type Ocorrencia = {
  
 | Arquivo | Uso |
 |---|---|
-| `App.tsx` | Tipa o estado `useState<Ocorrencia[]>` e a ocorrência selecionada |
+| `app/index.tsx`, `app/ocorrencia/[id].tsx` | Tipam o estado com as ocorrências carregadas |
 | `services/ocorrenciasService.ts` | Tipa leitura, criação e busca de ocorrências |
 | `components/OcorrenciaCard.tsx` | Tipa a prop do card e o mapa de cores de risco |
-| `screens/Lista.tsx`, `Cadastro.tsx`, `Detalhe.tsx` | Tipam as props e o campo de risco |
+| `app/cadastro.tsx` | Tipa o campo de risco |
  
 ---
  
-## ▶️ Como rodar
+##  Como rodar
  
-**Pré-requisitos:** Node.js (versão LTS) 
+**Pré-requisitos:** Node.js (versão LTS)
+
+Stack: Expo SDK 58, React Native 0.88, React 19 e Expo Router.
  
 ```bash
 npm install
+npx expo install --fix   # alinha as versões ao SDK
 npx expo start
 ```
  
@@ -95,7 +99,7 @@ Depois, escaneie o QR Code com o Expo Go (Android) ou com a câmera (iOS). Tamb�
  
 ---
  
-## 🔄 Comportamento esperado
+##  Comportamento esperado
  
 1. **Abrir o app:** a lista aparece (vazia na primeira execução, com a mensagem "Nenhuma ocorrência cadastrada.").
 2. **Criar:** toque em **+ Nova Ocorrência**, preencha descrição e local, escolha o risco (baixo, médio ou alto) e toque em **Salvar**.
@@ -104,7 +108,7 @@ Depois, escaneie o QR Code com o Expo Go (Android) ou com a câmera (iOS). Tamb�
 5. **Fechar e reabrir o app:** feche o app por completo e abra de novo. As ocorrências cadastradas continuam na lista.
 Os campos descrição e local são obrigatórios; sem eles o app exibe um alerta e não salva.
  
-## 🚦 Classificação de risco
+##  Classificação de risco
  
 O risco aparece como selo colorido **no card da lista** e **no detalhe**:
  
@@ -116,8 +120,6 @@ O risco aparece como selo colorido **no card da lista** e **no detalhe**:
  
 ---
  
-## 🎬 Vídeo
+##  Vídeo
  
-Demonstração do projeto (até 5 minutos), com README, execução no Expo, cadastro, lista, detalhe e persistência:
-**https://youtu.be/SEU_LINK_AQUI**
- 
+https://youtu.be/5RSoLEBdJJw?is=LX4NmXmkEjTdSBvP

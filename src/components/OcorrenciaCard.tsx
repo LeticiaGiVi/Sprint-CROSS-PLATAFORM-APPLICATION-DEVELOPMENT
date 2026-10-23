@@ -1,22 +1,11 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Ocorrencia } from "../types/Ocorrencia";
+import { Ocorrencia } from "@/types/Ocorrencia";
+import { RISCO_COR, RISCO_LABEL } from "@/types/risco";
 
 type Props = {
   ocorrencia: Ocorrencia;
   onPress: () => void;
-};
-
-const RISCO_LABEL: Record<Ocorrencia["risco"], string> = {
-  baixo: "BAIXO",
-  medio: "MÉDIO",
-  alto: "ALTO",
-};
-
-const RISCO_COR: Record<Ocorrencia["risco"], string> = {
-  baixo: "#2ECC71",
-  medio: "#F1C40F",
-  alto: "#E74C3C",
 };
 
 export default function OcorrenciaCard({ ocorrencia, onPress }: Props) {

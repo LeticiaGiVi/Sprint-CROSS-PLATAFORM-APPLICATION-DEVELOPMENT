@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ocorrencia } from "../types/Ocorrencia";
+import { Ocorrencia } from "@/types/Ocorrencia";
 
 // Chave usada no AsyncStorage. Centralizada aqui para evitar strings
 // "mágicas" espalhadas pelo app.
